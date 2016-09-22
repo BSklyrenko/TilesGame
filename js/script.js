@@ -56,14 +56,17 @@ function insertTiles(indexes, $field) {              // функция прои�
 
 function makeTile(index) {                           // функция создает DOM элемента тайла
   var $tile = $("<div class='tile available'></div>");
-  $tile.attr("data-index", index).css("background-color", '#a1a1a4')
+  $tile.attr("data-index", index)
+       .attr("data-selected", false)
+       .css("background-color", '#a1a1a4')
   .click(clickOnTile);
   return $tile;
 }
 
 function clickOnTile() {                            // обработчик события при нажатии на тайл
-  if(!tilesAvailableStatus) return;
+  if(!tilesAvailableStatus || $(this).data('selected')) return;
   $(this).css("background-color", colors[$(this).data('index')]);
+  $(this).data('selected', true);
   watchRound(this);
 }
 
@@ -96,6 +99,7 @@ function watchRound(obj) {                        // функция обрабо
           $objectsInRound.css("background-color", '#a1a1a4');
           tilesAvailableStatus = true;
       }, 1000);
+      $objectsInRound.data('selected', false);
     }
     roundState = true;
   }
